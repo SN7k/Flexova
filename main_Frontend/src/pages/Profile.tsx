@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, MapPin, Package, Heart, CreditCard, Plus, X, Edit } from 'lucide-react';
+import { User, Phone, MapPin, Package, Heart, CreditCard, Plus, X, Edit } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../context/ToastContext';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, X, ShoppingCart, Info, AlertTriangle } from 'lucide-react';
 

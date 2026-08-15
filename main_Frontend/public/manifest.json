@@ -3,17 +3,17 @@
   "name": "Flexova - Premium E-commerce",
   "icons": [
     {
-      "src": "logo.png",
+      "src": "logo0.png",
       "sizes": "64x64 32x32 24x24 16x16 96x96 128x128",
       "type": "image/png"
     },
     {
-      "src": "logo.png",
+      "src": "logo0.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo.png",
+      "src": "logo0.png",
       "type": "image/png",
       "sizes": "512x512"
     }
@@ -21,5 +21,5 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#000000"
 }

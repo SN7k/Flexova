@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Truck, Clock, Globe, Package } from 'lucide-react';
+import { Truck, Clock, Globe } from 'lucide-react';
 
 const Shipping: React.FC = () => {
   const shippingMethods = [
@@ -133,4 +133,4 @@ const Shipping: React.FC = () => {
   );
 };
 
-export default Shipping; 
+export default Shipping;

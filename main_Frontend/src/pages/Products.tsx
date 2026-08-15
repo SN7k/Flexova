@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Heart, ShoppingCart } from 'lucide-react';
+import { Search, Filter, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';

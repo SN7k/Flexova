@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Star, ShoppingBag } from 'lucide-react';
+import { ArrowRight, Star, ShoppingBag, Mail, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    // Basic email validation
+    if (!newsletterEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Simulate API call to subscribe user
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubscribed(true);
+      setNewsletterEmail('');
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setSubscribed(false);
+      }, 5000);
+    }, 1000);
+  };
+  
   // Mock featured products
   const featuredProducts = [
     {
@@ -206,26 +236,55 @@ const Home: React.FC = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-primary">
+      <section className="py-12 sm:py-16 bg-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
               Subscribe to Our Newsletter
             </h2>
-            <p className="text-white/80 mb-8">
+            <p className="text-white/80 mb-6 sm:mb-8 text-sm sm:text-base">
               Get the latest updates on new products and upcoming sales
             </p>
-            <div className="max-w-md mx-auto">
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-white"
-                />
-                <button className="bg-white text-primary px-6 py-3 rounded-r-lg hover:bg-gray-100 transition-colors">
-                  Subscribe
-                </button>
-              </div>
+            <div className="max-w-md mx-auto px-2 sm:px-0">
+              <form onSubmit={handleSubscribe} className="w-full">
+                <div className="flex flex-col sm:flex-row w-full">
+                  <div className="flex-1 mb-2 sm:mb-0">
+                    <input
+                      type="email"
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className={`w-full px-4 py-3 rounded-lg sm:rounded-r-none focus:outline-none focus:ring-2 ${error ? 'border-2 border-red-500 ring-red-300' : 'ring-white'} mb-0`}
+                      disabled={isSubmitting || subscribed}
+                    />
+                  </div>
+                  <button 
+                    type="submit" 
+                    className={`${isSubmitting || subscribed ? 'bg-green-600' : 'bg-white text-primary'} ${isSubmitting || subscribed ? 'text-white' : 'text-primary'} px-6 py-3 rounded-lg sm:rounded-l-none hover:bg-gray-100 hover:bg-opacity-90 transition-colors flex items-center justify-center`}
+                    disabled={isSubmitting || subscribed}
+                  >
+                    {isSubmitting ? (
+                      <span className="flex items-center">
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing
+                      </span>
+                    ) : subscribed ? (
+                      <span className="flex items-center">
+                        <Check className="h-5 w-5 mr-2" />
+                        Subscribed!
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center w-full">
+                        Subscribe
+                      </span>
+                    )}
+                  </button>
+                </div>
+                {error && <p className="text-white text-sm mt-2 bg-red-500 bg-opacity-30 py-1 px-2 rounded">{error}</p>}
+              </form>
             </div>
           </div>
         </div>

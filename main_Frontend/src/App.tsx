@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer.js';
-import Hero from './components/Hero';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
@@ -61,9 +60,9 @@ const App: React.FC = () => {
       <ToastProvider>
         <AuthProvider>
           <CartProvider>
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen w-full overflow-x-hidden max-w-[100vw]">
               <Navbar />
-              <main className="flex-grow">
+              <main className="flex-grow w-full overflow-x-hidden">
                 <AnimatedRoutes />
               </main>
               <Footer />

@@ -16,6 +16,19 @@ const Navbar: React.FC = () => {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const lastScrollY = useRef(0);
   const location = useLocation();
+  
+  // Handle body overflow when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isOpen]);
 
   // Close menu when route changes
   useEffect(() => {
@@ -79,6 +92,26 @@ const Navbar: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [isOpen]);
+
+  // Prevent scrolling on navbar
+  useEffect(() => {
+    const preventScroll = (e: WheelEvent) => {
+      // Prevent the default scroll behavior when mouse is over navbar
+      e.preventDefault();
+    };
+    
+    // Add the event listener to the navbar element
+    const navElement = navRef.current;
+    if (navElement) {
+      navElement.addEventListener('wheel', preventScroll, { passive: false });
+    }
+    
+    return () => {
+      if (navElement) {
+        navElement.removeEventListener('wheel', preventScroll);
+      }
+    };
+  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -152,7 +185,7 @@ const Navbar: React.FC = () => {
           {/* Logo - centered on mobile, left on desktop */}
           <div className="md:relative md:left-0 md:transform-none absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <img src="/bg.png" alt="Flexova" className="h-14 w-auto" />
+              <img src="/bg.png" alt="Flexova" className="h-14 sm:h-16 md:h-18 w-auto" />
             </Link>
           </div>
 
@@ -257,56 +290,49 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation - Fixed positioning to prevent layout shifts */}
-      <div className="md:hidden overflow-hidden" style={{ position: 'absolute', width: '100%', zIndex: 40 }}>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ 
-                duration: 0.2,
-                ease: "easeInOut"
-              }}
-              className="bg-white border-t border-gray-200 shadow-lg"
-            >
-              <div className="px-4 pt-3 pb-4 space-y-1 sm:px-5">
+      {/* Mobile Menu - Full screen overlay */}
+      {isOpen && (
+        <div className="md:hidden fixed inset-0 bg-white z-50 no-scrollbar mobile-menu">
+          <div className="flex flex-col h-full no-scrollbar">
+            {/* Mobile Menu Header */}
+            <div className="flex justify-between items-center p-4 border-b border-gray-200">
+              <Link to="/" className="flex-shrink-0" onClick={() => setIsOpen(false)}>
+                <img src="/bg.png" alt="Flexova" className="h-12 w-auto" />
+              </Link>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-md text-gray-700 hover:bg-gray-100"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            {/* Mobile Menu Items */}
+            <div className="flex-1 p-4 no-scrollbar overflow-hidden">
+              <div className="space-y-4">
                 {navItems.map((item) => (
-                  <motion.div
-                    key={item.name}
-                    whileHover={{ x: 5 }}
-                    className="block"
-                  >
+                  <div key={item.name} className="border-b border-gray-100 pb-3">
                     <Link
                       to={item.path}
-                      className={`flex items-center px-3 py-3 rounded-lg transition-all duration-200 ${
-                        location.pathname === item.path 
-                          ? 'bg-primary/10 text-primary font-medium' 
-                          : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                      }`}
+                      className={`block px-2 py-3 text-lg rounded-md ${location.pathname === item.path 
+                        ? 'text-primary font-medium' 
+                        : 'text-gray-700'}`}
                       onClick={() => setIsOpen(false)}
                     >
                       {item.name}
                     </Link>
-                  </motion.div>
+                  </div>
                 ))}
                 
-                {/* Cart Link in Mobile Menu */}
-                <motion.div
-                  whileHover={{ x: 5 }}
-                  className="block"
-                >
+                <div className="border-b border-gray-100 pb-3">
                   <Link
                     to="/cart"
-                    className={`flex items-center px-3 py-3 rounded-lg transition-all duration-200 ${
-                      location.pathname === '/cart' 
-                        ? 'bg-primary/10 text-primary font-medium' 
-                        : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                    }`}
+                    className={`flex items-center px-2 py-3 text-lg rounded-md ${location.pathname === '/cart' 
+                      ? 'text-primary font-medium' 
+                      : 'text-gray-700'}`}
                     onClick={() => setIsOpen(false)}
                   >
-                    <ShoppingCart className="h-5 w-5 mr-2" />
+                    <ShoppingCart className="h-5 w-5 mr-3" />
                     Cart
                     {cartItemCount > 0 && (
                       <span className="ml-2 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
@@ -314,12 +340,23 @@ const Navbar: React.FC = () => {
                       </span>
                     )}
                   </Link>
-                </motion.div>
+                </div>
+                
+                <div className="pt-2">
+                  <Link
+                    to={user ? "/profile" : "/login"}
+                    className="flex items-center px-2 py-3 text-lg rounded-md text-gray-700"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <User className="h-5 w-5 mr-3" />
+                    {user ? "My Account" : "Login / Register"}
+                  </Link>
+                </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

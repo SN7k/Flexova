@@ -14,7 +14,7 @@ const Login: React.FC = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
   
-  const { login, user, loading, error } = useAuth();
+  const { login, user, loading } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   

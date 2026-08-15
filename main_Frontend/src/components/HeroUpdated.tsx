@@ -7,30 +7,31 @@ const Hero: React.FC = () => {
   return (
     <div className="relative h-screen hero-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6 px-1 sm:px-0"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-dark">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-dark">
               Discover Your Perfect
               <span className="text-primary"> Style</span>
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-base sm:text-lg text-gray-600">
               Explore our curated collection of fashion products and complete outfit combos.
               Find your unique style with Flexova.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto"
               >
                 <Link
                   to="/products"
-                  className="bg-primary text-white px-8 py-3 rounded-full hover:bg-primary/90 transition-colors"
+                  className="bg-primary text-white px-6 sm:px-8 py-3 rounded-full hover:bg-primary/90 transition-colors block text-center"
                 >
                   Shop Now
                 </Link>
@@ -38,10 +39,11 @@ const Hero: React.FC = () => {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto"
               >
                 <Link
                   to="/combos"
-                  className="bg-white text-primary border-2 border-primary px-8 py-3 rounded-full hover:bg-primary/10 transition-colors"
+                  className="bg-white text-primary border-2 border-primary px-6 sm:px-8 py-3 rounded-full hover:bg-primary/10 transition-colors block text-center"
                 >
                   View Combos
                 </Link>

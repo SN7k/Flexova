@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 
 interface FAQItem {
   question: string;
@@ -9,16 +9,7 @@ interface FAQItem {
 }
 
 const FAQ: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
-
-  const categories = [
-    { id: 'all', name: 'All Questions' },
-    { id: 'shipping', name: 'Shipping & Delivery' },
-    { id: 'returns', name: 'Returns & Refunds' },
-    { id: 'orders', name: 'Orders & Payment' },
-    { id: 'products', name: 'Products & Sizing' },
-  ];
 
   const faqItems: FAQItem[] = [
     {
@@ -63,10 +54,6 @@ const FAQ: React.FC = () => {
     },
   ];
 
-  const filteredFAQs = activeCategory === 'all'
-    ? faqItems
-    : faqItems.filter(item => item.category === activeCategory);
-
   const toggleItem = (index: number) => {
     setExpandedItems(prev =>
       prev.includes(index)
@@ -83,7 +70,7 @@ const FAQ: React.FC = () => {
         </h1>
 
         <div className="space-y-4">
-          {filteredFAQs.map((item, index) => (
+          {faqItems.map((item, index) => (
             <div
               key={index}
               className="bg-white rounded-lg shadow-md overflow-hidden"
